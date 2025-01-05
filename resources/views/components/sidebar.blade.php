@@ -52,76 +52,84 @@
   margin-right: 10px; /* Beri jarak antara ikon dan teks */
 }
 
-.nav-link {
-  color: black; /* Warna teks default */
-}
+.nav-item {
+    display: flex;
+    justify-content: center; /* Centers the button horizontally */
+    margin-bottom: 15px; /* Adds space between each item */
+  }
 
-.nav-link:hover {
-  background-color: #f4f4f4; /* Warna latar belakang saat hover */
-  color: #17a2b8; /* Warna teks saat hover */
-}
+  .nav-link {
+    background: none;
+    border: none;
+    padding: 10px 20px; /* Adds some padding for a more comfortable button */
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    justify-content: flex-start; /* Aligns text to the left */
+  }
 
-.sidebar {
-  padding: 10px; /* Menambah ruang di dalam sidebar */
-}
+  .nav-item .nav-link .nav-icon {
+    margin-right: 10px; /* Keeps margin between icon and text */
+  }
+
+  .nav-link:hover {
+    background-color: #f4f4f4; /* Add hover effect */
+    color: #17a2b8; /* Highlight color on hover */
+  }
 </style>
 
-
+<!-- Sidebar Navigation -->
 <aside class="main-sidebar sidebar-white-primary elevation-4">
-  <!-- Admin Header -->
   <div class="brand-link custom-egg-blue">
-    <span class="brand-text font-weight-dark">{{Auth::user()->name}}</span>
+    <span class="brand-text font-weight-dark">{{ Auth::user()->name }}</span>
   </div>
 
-  <!-- Dashboard Header -->
   <div class="brand-link custom-egg-blue-d">
     <span class="brand-text-d font-weight-dark">Dashboard</span>
   </div>
 
-  <!-- Sidebar Navigation -->
   <div class="sidebar">
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
         <!-- Dashboard -->
         <li class="nav-item">
-          <a href="/dashboard" class="nav-link">
+          <button onclick="window.location.href='/dashboard'" class="nav-link">
             <i class="nav-icon fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
-          </a>
+          </button>
         </li>
         <!-- Pengguna -->
         <li class="nav-item">
-          <a href="/dashboard/pengguna" class="nav-link">
+          <button onclick="window.location.href='/dashboard/pengguna'" class="nav-link">
             <i class="nav-icon fas fa-user"></i>
             <p>Pengguna</p>
-          </a>
+          </button>
         </li>
         <!-- Data Dokter -->
         <li class="nav-item">
-          <a href="/dashboard/dokter" class="nav-link">
+          <button onclick="window.location.href='/dashboard/dokter'" class="nav-link">
             <i class="nav-icon fas fa-heartbeat"></i>
             <p>Data Dokter</p>
-          </a>
+          </button>
         </li>
         <!-- Parameter -->
         <li class="nav-item">
-          <a href="/dashboard/parameter" class="nav-link">
+          <button onclick="window.location.href='/dashboard/parameter'" class="nav-link">
             <i class="nav-icon fas fa-cogs"></i>
-            <p style='text-align: auto;'>Parameter</p>
-          </a>
+            <p>Parameter</p>
+          </button>
         </li>
         <!-- Logout -->
-<!-- Logout -->
-<li class="nav-item">
-  <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
-      @csrf
-      <button type="submit" class="nav-link" style="background: none; border: none; width: 100%; padding: 0; text-align: auto; display: block;">
-          <i class="nav-icon fas fa-sign-out-alt"></i>
-          <p style="margin: 0;">Logout</p>
-      </button>
-  </form>
-</li>
-
+        <li class="nav-item">
+          <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p style="margin: 0;">Logout</p>
+          </button>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+          </form>
+        </li>
       </ul>
     </nav>
   </div>
