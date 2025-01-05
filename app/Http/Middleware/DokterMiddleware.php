@@ -17,7 +17,7 @@ class DokterMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'dokter') {
+        if (Auth::check() && Auth::user()->role == User::ROLE_DOKTER) {
             return $next($request);
         }
         abort(403, 'Unauthorized Access.');

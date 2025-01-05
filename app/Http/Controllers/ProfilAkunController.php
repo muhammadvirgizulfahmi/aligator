@@ -41,7 +41,7 @@ class ProfilAkunController extends Controller
         $user = User::findOrFail($id);
 
         // Return a view and pass the user data
-        return view('pengguna.profil_dokter_anak', ['user' => $user]);
+        return view('dokter.profil_dokter_anak', ['user' => $user]);
     }
 
     /**
