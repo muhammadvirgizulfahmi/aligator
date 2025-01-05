@@ -1,6 +1,6 @@
 <x-layout>
-    <x-slot name='judul_halaman'>Pengguna</x-slot>
-    <x-slot name='nama_halaman'>Tambah Pengguna</x-slot>
+    <x-slot name='judul_halaman'>Parameter</x-slot>
+    <x-slot name='nama_halaman'>Tambah Parameter</x-slot>
     <x-slot name='konten_halaman'>
         <!-- Display Validation Errors -->
         @if ($errors->any())
@@ -13,7 +13,7 @@
         </div>
         @endif
 
-        <form action="{{ url('dashboard/pengguna/store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ url('dashboard/parameter/store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <!-- Menggunakan Grid System Bootstrap -->
 

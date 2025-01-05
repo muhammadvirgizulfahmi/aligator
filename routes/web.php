@@ -17,6 +17,7 @@ use App\Http\Controllers\AnakController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\Admin\DashboardPenggunaController;
+use App\Http\Controllers\Admin\DashboardParameterController;
 use App\Http\Controllers\ProfilAkunController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PerkembanganController;
@@ -116,6 +117,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit/{id}', [DashboardPenggunaController::class, 'edit'])->name('pengguna.edit');
             Route::put('/update/{id}', [DashboardPenggunaController::class, 'update'])->name('pengguna.update');
             Route::delete('/pengguna/{id}', [DashboardPenggunaController::class, 'destroy'])->name('pengguna.destroy');  // Nama route diubah
+
+        // parameter
+        Route::middleware('admin')->prefix('/parameter')->group(function () {
+            Route::get('/', [DashboardParameterController::class, 'index'])->name('parameter.dashboard');
+            Route::get('/show/{id}', [DashboardParameterController::class, 'show'])->name('parameter.show');
+            Route::get('/create', [DashboardParameterController::class, 'create'])->name('parameter.create');
+            Route::post('/store', [DashboardParameterController::class, 'store'])->name('parameter.store');
+            Route::get('/edit/{id}', [DashboardParameterController::class, 'edit'])->name('parameter.edit');
+            Route::put('/update/{id}', [DashboardParameterController::class, 'update'])->name('parameter.update');
+            Route::delete('/destroy/{id}', [DashboardParameterController::class, 'destroy'])->name('parameter.destroy');  // Nama route diubah
+
+        });
 //             Route::get('/create', [KabkotaController::class, 'create']);
 //             Route::get('/show/{id}', [KabkotaController::class, 'show']);
 //             Route::post('/store', [KabkotaController::class, 'store']);

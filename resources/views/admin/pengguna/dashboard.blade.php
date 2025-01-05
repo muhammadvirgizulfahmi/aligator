@@ -12,7 +12,6 @@
             <th>Email</th>
             <th>Phone</th>
             <th>Gender</th>
-            <th>Profile Picture</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -25,13 +24,6 @@
             <td>{{ $users->email }}</td>
             <td>{{ $users->noTelp }}</td>
             <td>{{ $users->jenisKelamin }}</td>
-            <td>
-              @if($users->fotoProfil)
-              <img src="{{ asset('storage/' . $users->fotoProfil) }}" alt="Profile Photo" width="50">
-              @else
-                <span>No photo</span>
-              @endif
-            </td>
             <td>
             <!-- Actions: View, Edit, Delete -->
               <a href="{{ route('pengguna.show', $users->id) }}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View</a>
