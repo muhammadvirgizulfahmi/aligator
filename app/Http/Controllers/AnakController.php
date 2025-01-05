@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Anak;
 use App\Models\Perkembangan;
+use App\Models\Parameter;
+use App\Models\Recommendation;
 
 class AnakController extends Controller
 {
@@ -27,8 +29,11 @@ class AnakController extends Controller
     {
         $user = auth()->user(); // Get the authenticated user
 
-        // Check if the user has children
-        $children = $user->children; // Get the children related to this user
+        if (auth()->user()->role === User::ROLE_DOKTER) {
+            $children = Anak::with('wali')->get();
+        } else {
+            $children = Anak::with('wali')->where('id_wali', auth()->id())->get();
+        }
     
         // If no children, pass an empty collection to the view
         if ($children->isEmpty()) {
@@ -53,17 +58,47 @@ class AnakController extends Controller
 
      public function edit(string $id)
      {
-        // Find the anak record by id
-        $anak = Anak::findOrFail($id);
-
-        // Retrieve all perkembangan for this anak
-        $perkembangan = Perkembangan::where('id_anak', $id)->get();
-
-        // Pass the data to the view
-        return view('pengguna.data_anak_edit', compact('perkembangan', 'anak'));
-         
-        // return view("pengguna.data_anak_edit", compact("children"));
+         // Find the anak record by id
+         $anak = Anak::findOrFail($id);
+     
+         // Retrieve all perkembangan for this anak
+         $perkembangan = Perkembangan::where('id_anak', $id)->get();
+     
+         // Retrieve doctor recommendations for this anak
+         $doctorRecommendations = Recommendation::where('id_anak', $id)->get();
+     
+         // Get the latest perkembangan based on the highest id (most recent)
+         $latestPerkembangan = Perkembangan::where('id_anak', $id)
+             ->orderBy('id', 'desc') // Order by id to get the most recent record
+             ->first();
+     
+         // Generate system recommendations
+         $systemRecommendations = [];
+     
+         if ($latestPerkembangan) {
+             // Match with the parameter table based on umur
+             $parameter = Parameter::where('umur', $latestPerkembangan->umur)->first();
+     
+             if ($parameter) {
+                 // Generate recommendations based on the comparison
+                 if ($latestPerkembangan->lingkarKepala < $parameter->lingkarKepala) {
+                     $systemRecommendations[] = "[Lingkar Kepala] Konsultasi medis untuk pemeriksaan lebih lanjut guna memastikan tidak ada masalah neurologis atau genetik, sekaligus mengevaluasi kebutuhan stimulasi perkembangan otak.";
+                 }
+     
+                 if ($latestPerkembangan->tinggiBadan < $parameter->tinggiBadan) {
+                     $systemRecommendations[] = "[Tinggi Badan] Optimalkan asupan nutrisi, khususnya protein dan vitamin D, untuk mendukung pertumbuhan tulang dan jaringan.";
+                 }
+     
+                 if ($latestPerkembangan->beratBadan < $parameter->beratBadan) {
+                     $systemRecommendations[] = "[Berat Badan] Tambahkan kalori padat nutrisi ke dalam makanan anak, seperti alpukat, telur, kacang-kacangan, atau minyak zaitun, untuk meningkatkan berat badan secara sehat.";
+                 }
+             }
+         }
+     
+         // Pass the data and recommendations to the view
+         return view('pengguna.data_anak_edit', compact('perkembangan', 'anak', 'systemRecommendations', 'doctorRecommendations'));
      }
+     
      public function store(Request $request)
     {
         // validasi form input
@@ -83,10 +118,8 @@ class AnakController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    
+    
 
     /**
      * Update the specified resource in storage.

@@ -1,3 +1,4 @@
+@use(App\Models\Parameter)
 @include('home.navbar')
     <style>
                 /* Table Styles */
@@ -37,36 +38,21 @@
         <table>
             <thead>
                 <tr>
+                    <th>Umur Anak (Tahun)</th>
                     <th>Tinggi Badan (cm)</th>
                     <th>Berat Badan (kg)</th>
                     <th>Lingkar Kepala (cm)</th>
-                    <th>Umur Anak (Tahun)</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach($parameter as $parameters)
                 <tr>
-                    <td>130 cm</td>
-                    <td>20 kg</td>
-                    <td>15 cm</td>
-                    <td>12 Tahun</td>
-                </tr>
-                <tr>
-                    <td>-- cm</td>
-                    <td>-- kg</td>
-                    <td>-- cm</td>
-                    <td>-- Tahun</td>
-                </tr>
-                <tr>
-                    <td>-- cm</td>
-                    <td>-- kg</td>
-                    <td>-- cm</td>
-                    <td>-- Tahun</td>
-                </tr>
-                <tr>
-                    <td>-- cm</td>
-                    <td>-- kg</td>
-                    <td>-- cm</td>
-                    <td>-- Tahun</td>
+                    {{-- <td>{{ $loop->iteration }}</td> --}}
+                    <td>{{ $parameters->umur }}</td>
+                    <td>{{ $parameters->tinggiBadan }}</td>
+                    <td>{{ $parameters->beratBadan }}</td>
+                    <td>{{ $parameters->lingkarKepala }}</td>
+                @endforeach
                 </tr>
             </tbody>
         </table>

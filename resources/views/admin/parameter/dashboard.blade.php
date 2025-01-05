@@ -11,6 +11,7 @@
             <th>Tinggi Badan</th>
             <th>Berat Badan</th>
             <th>Lingkar Kepala</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +24,7 @@
             <td>{{ $parameters->lingkarKepala }}</td>
             <td>
             <!-- Actions: View, Edit, Delete -->
-              <a href="{{ route('parameter.show', $parameters->id) }}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View</a>
+              {{-- <a href="{{ route('parameter.show', $parameters->id) }}" class="btn btn-info btn-sm"><i class="far fa-eye"></i> View</a> --}}
               <a href="{{ route('parameter.edit', $parameters->id) }}" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> Edit</a>
                 <form action="{{ route('parameter.destroy', $parameters->id) }}" method="POST" style="display:inline;">
                 @csrf
