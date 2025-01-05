@@ -98,11 +98,6 @@ Route::middleware(['auth'])->group(function () {
     // Profil Dokter
     Route::get('/profil-dokter/{id}', [ProfilAkunController::class, 'profilDokter'])->name('profil_dokter');
     });
-
-    // Dashboard Route for Admin
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('admin') // Middleware ensures only admins can access this route
-        ->name('/dashboard');
     
     // jika admin ke dashboard
     Route::middleware('admin')->prefix('/dashboard')->group(function () {
@@ -117,6 +112,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit/{id}', [DashboardPenggunaController::class, 'edit'])->name('pengguna.edit');
             Route::put('/update/{id}', [DashboardPenggunaController::class, 'update'])->name('pengguna.update');
             Route::delete('/pengguna/{id}', [DashboardPenggunaController::class, 'destroy'])->name('pengguna.destroy');  // Nama route diubah
+
+        });
 
         // parameter
         Route::middleware('admin')->prefix('/parameter')->group(function () {
@@ -138,8 +135,6 @@ Route::middleware(['auth'])->group(function () {
         });
 
     });
-
-});
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
