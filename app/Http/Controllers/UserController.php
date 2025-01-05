@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+
 class UserController extends Controller
 {
     /**
@@ -53,14 +54,6 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
-    }
-    public function profil_pengguna(string $id)
-    {
-        //
-    }
-    public function profil_dokter(string $id)
     {
         //
     }

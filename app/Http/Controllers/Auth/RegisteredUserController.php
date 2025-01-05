@@ -49,4 +49,89 @@ class RegisteredUserController extends Controller
 
         return redirect()->intended('/');
     }
+
+    public function redirectBasedOnRole(Request $request)
+    {
+        $role = $request->input('role');
+
+        if ($role === 'pengguna') {
+            return redirect()->route('register.pengguna');
+        } elseif ($role === 'dokter') {
+            return redirect()->route('register.dokter');
+        }
+
+        return back()->withErrors(['role' => 'Please select a valid role.']);
+    }
+
+    public function createPengguna()
+    {
+        return view('pengguna.regisPengguna');
+    }
+
+    public function storePengguna(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'username' => 'required|string',
+            'noTelp' => 'required|numeric',
+            'jenisKelamin' => 'required|string'
+            // Add additional validation for pengguna if needed
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'username' => $request->username,
+            'noTelp' => $request->noTelp,
+            'jenisKelamin' => $request->jenisKelamin,
+            'role' => 'pengguna',
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect('/'); // Adjust as needed
+    }
+
+    public function createDokter()
+    {
+        return view('dokter.regisDokter');
+    }
+
+    public function storeDokter(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'username' => 'required|string',
+            'noTelp' => 'required|numeric',
+            'jenisKelamin' => 'required|string',
+            'alamat' => 'required|string|max:255',
+            'fotoSertifikat' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            // Add additional validation for dokter if needed
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'username' => $request->username,
+            'noTelp' => $request->noTelp,
+            'jenisKelamin' => $request->jenisKelamin,
+            'role' => 'dokter',
+            'alamat' => $request->alamat,
+            'fotoSertifikat' => $request->fotoSertifikat
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect('/'); // Adjust as needed
+    }
 }

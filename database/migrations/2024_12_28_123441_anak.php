@@ -13,17 +13,12 @@ return new class extends Migration
     {
         Schema::create('anak', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->date('tgl_lahir');
-            $table->enum('jenisKelamin', ['laki-laki', 'perempuan']);
-            $table->integer('umur');
-            $table->float('tinggiBadan');
-            $table->float('beratBadan');
-            $table->float('lingkarKepala');
-            $table->string('rekomendasiSistem');
-            $table->string('rekomendasiDokter');
             $table->unsignedBigInteger('id_wali');
             $table->foreign('id_wali')->references('id')->on('users');
+            $table->string('nama');
+            $table->date('tgl_lahir');
+            $table->enum('jenisKelamin', ['Laki-laki', 'Perempuan']);
+
         });
     }
 

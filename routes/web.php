@@ -18,6 +18,8 @@ use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\Admin\DashboardPenggunaController;
 use App\Http\Controllers\ProfilAkunController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PerkembanganController;
 
 
 
@@ -25,8 +27,6 @@ Route::get('/profil-dokter', [ProfilDokterController::class, 'index'])->name('pr
 Route::get('/konsul-pengguna', [KonsultasiController::class, 'index'])->name('konsulPengguna');
 Route::get('/konsul-pengguna/konsul-form', [KonsultasiController::class, 'create'])->name('konsulCreate');
 Route::get('/data-anak', [AnakController::class, 'index'])->name('data_anak');
-Route::get('/data-anak-create', [AnakController::class, 'create'])->name('data_anak_create');
-Route::get('/data-anak-edit', [AnakController::class, 'edit'])->name('data_anak_edit');
 Route::get('/parameter-stunting', [ParameterController::class, 'index'])->name('parameter');
 Route::get('/profil', [DokterController::class, 'profilDokter'])->name('profil_dokter_anak');
 Route::get('/konsul-dokter', [KonsultasiController::class, 'konsulDokter'])->name('konsulDokter');
@@ -39,6 +39,22 @@ Route::get('/', [LandingPageController::class, 'index'])->name('index');
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Role selection and redirection
+Route::get('/register/role', [RegisteredUserController::class, 'redirectBasedOnRole'])->name('register.redirect');
+
+// Registration forms
+Route::get('/register/pengguna', [RegisteredUserController::class, 'createPengguna'])
+    ->name('register.pengguna');
+
+Route::post('/register/pengguna', [RegisteredUserController::class, 'storePengguna']);
+
+Route::get('/register/dokter', [RegisteredUserController::class, 'createDokter'])
+    ->name('register.dokter');
+
+Route::post('/register/dokter', [RegisteredUserController::class, 'storeDokter']);
+
+// Route::get('/register-pengguna', [ProfilAkunController::class, 'profilPengguna'])->name('profil_pengguna');
+
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
@@ -46,6 +62,30 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('pengguna')->prefix('')->group(function () {
     // Profil Pengguna
     Route::get('/profil-pengguna/{id}', [ProfilAkunController::class, 'profilPengguna'])->name('profil_pengguna');
+
+    // Data Anak
+    Route::prefix('/data-anak')->group(function () {
+        Route::get('/', [AnakController::class, 'showChildrenProfile'])->name('data_anak'); 
+        Route::get('/create', [AnakController::class, 'create'])->name('anak.create');
+        Route::post('/store', [AnakController::class, 'store'])->name('anak.store');
+        Route::get('/edit/{id}', [AnakController::class, 'edit'])->name('anak.edit');
+        Route::put('/update/{id}', [AnakController::class, 'update'])->name('anak.update');
+        // Route::delete('/destroy/{id}', [AnakController::class, 'destroy'])->name('anak.destroy');
+        Route::delete('/{id}', [AnakController::class, 'destroy'])->name('anak.destroy');
+
+
+        // Perkembangan
+        Route::prefix('/perkembangan')->group(function () {
+        Route::get('/create/{id}', [PerkembanganController::class, 'create'])->name('perkembangan.create');
+        Route::get('/edit/{id}', [PerkembanganController::class, 'edit'])->name('perkembangan.edit');
+        Route::post('/store/{id}', [PerkembanganController::class, 'store'])->name('perkembangan.store');
+        Route::put('/update/{id}', [PerkembanganController::class, 'update'])->name('perkembangan.update');
+        Route::delete('/destroy/{id}', [PerkembanganController::class, 'destroy'])->name('perkembangan.destroy');
+        });
+
+    });
+    
+
     });
 
     Route::middleware(['dokter'])->get('/test-dokter', function () {

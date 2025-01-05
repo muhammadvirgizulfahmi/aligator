@@ -32,20 +32,19 @@
         border-radius: 4px;
     }
     .form-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
     }
     .submit-btn {
-    background-color: #004c70;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
+        background-color: #004c70;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
     }
-
     .delete-btn {
         background-color: #c90707;
         color: white;
@@ -55,13 +54,17 @@
         border-radius: 4px;
         cursor: pointer;
     }
-
     .submit-btn:hover {
         background-color: #003a52;
     }
-
     .delete-btn:hover {
         background-color: #8c0606;
+    }
+    .button-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 20px; /* Increased space between buttons */
+        margin-top: 10px; /* Space between form and buttons */
     }
     .table {
         width: 100%;
@@ -77,79 +80,125 @@
         background-color: #004c70;
         color: white;
     }
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 2px solid black;
+    }
+    .styled-table th,
+    .styled-table td {
+        border: 2px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+    .styled-table th {
+        background-color: #004c70;
+        color: white;
+    }
+    .styled-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .styled-table tr:nth-child(odd) {
+        background-color: white;
+    }
+    .edit-btn {
+        background-color: #004c70;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-block;
+        text-align: center;
+    }
+    .edit-btn:hover {
+        background-color: #003a52;
+    }
 </style>
-    <div class="container">
-        <div class="section">
-            <h2>Biodata Diri Anak</h2>
-            <form>
-                <div class="form-group">
-                    <label for="nama-anak">Nama Anak:</label>
-                    <input type="text" id="nama-anak" name="nama-anak">
-                </div>
-                <div class="form-group">
-                    <label for="tanggal-lahir">Tanggal Lahir:</label>
-                    <input type="date" id="tanggal-lahir" name="tanggal-lahir">
-                </div>
-                <div class="form-group">
-                    <label for="jenis-kelamin">Jenis Kelamin:</label>
-                    <input type="text" id="jenis-kelamin" name="jenis-kelamin">
-                </div>
-                <div class="form-group">
-                    <label for="umur">Umur:</label>
-                    <input type="text" id="umur" name="umur">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="submit-btn">Update</button>
-                    <button type="button" class="delete-btn">Hapus</button>
-                </div>
-            </form>
-        </div>
 
-        <div class="section">
-            <h2>Biodata Perkembangan Anak</h2>
-            <form>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Umur</th>
-                            <th>Tinggi Badan</th>
-                            <th>Berat Badan</th>
-                            <th>Lingkar Kepala</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="number" name="umur"></td>
-                            <td><input type="text" name="tinggi-badan"></td>
-                            <td><input type="text" name="berat-badan"></td>
-                            <td><input type="text" name="lingkar-kepala"></td>
-                            <td>
-                                <a href="#" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> Edit</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-        </div>
-        
-        <div class="section">
-            <h2>Rekomendasi Kesehatan</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Sistem</th>
-                            <th>Dokter Anak</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
+
+<div class="container">
+    <div class="section">
+        <h2>Biodata Diri Anak</h2>
+        <form action="{{ url('data-anak/update', $anak->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('put')
+            <div class="form-group">
+                <label for="nama-anak">Nama Anak:</label>
+                <input type="text" id="nama-anak" name="nama" value="{{ $anak->nama }}">
+            </div>
+            <div class="form-group">
+                <label for="tanggal-lahir">Tanggal Lahir:</label>
+                <input type="date" id="tanggal-lahir" name="tgl_lahir" value="{{ \Carbon\Carbon::parse($anak->tgl_lahir)->format('Y-m-d') }}">
+            </div>            
+            <div class="form-group">
+                <label for="jenis-kelamin">Jenis Kelamin:</label>
+                <input type="text" id="jenis-kelamin" name="jenisKelamin" value="{{ $anak->jenisKelamin }}">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Update</button>
+            </div>
+        </form>
     </div>
+
+    <div class="section">
+        <h2>Biodata Perkembangan Anak</h2>
+            <table class="styled-table">
+                <thead>
+                    <tr style="border: 2px solid black;">
+                        <th>Umur</th>
+                        <th>Tinggi Badan</th>
+                        <th>Berat Badan</th>
+                        <th>Lingkar Kepala</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($perkembangan as $perkembangans)
+                    <tr>
+                        <td>{{ $perkembangans->umur }}</td>
+                        <td>{{ $perkembangans->tinggiBadan }}</td>
+                        <td>{{ $perkembangans->beratBadan }}</td>
+                        <td>{{ $perkembangans->lingkarKepala }}</td>
+                        <td>
+                            <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+                                <a href="{{ route('perkembangan.edit', $perkembangans->id) }}" style="text-decoration:none;" class="btn submit-btn">Edit</a>
+                                <form action="{{ route('perkembangan.destroy', $perkembangans->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>                            
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="form-actions">
+                <a href="{{ route('perkembangan.create', ['id' => $anak->id]) }}" class="submit-btn" style="text-decoration:none">Tambah</a>
+            </div>
+    </div>
+    
+    <div class="section">
+        <h2>Rekomendasi Kesehatan</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sistem</th>
+                    <th>Dokter Anak</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @include('home.footer')

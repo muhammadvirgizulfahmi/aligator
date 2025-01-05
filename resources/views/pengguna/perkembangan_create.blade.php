@@ -90,27 +90,36 @@
                 </ul>
             </div>
             @endif
-            <form method="POST" action="{{ route('anak.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('perkembangan.store', ['id' => $anak->id]) }}" enctype="multipart/form-data">
             @csrf
+
+                <input type="hidden" name="id_anak" value="{{ $anak->id }}"> <!-- Add this line -->
+
                 <div class="form-group">
-                    <label for="nama-anak">Nama Anak:</label>
-                    <input type="text" id="nama-anak" name="nama" required>
+                    <label for="umur">Umur (tahun):</label>
+                    <input type="number" id="umur" name="umur" required>
                 </div>
                 <div class="form-group">
-                    <label for="tanggal-lahir">Tanggal Lahir:</label>
-                    <input type="date" id="tanggal-lahir" name="tgl_lahir" required>
+                    <label for="tinggiBadan">Tinggi Badan (cm):</label>
+                    <input type="number" id="tinggiBadan" name="tinggiBadan" required>
                 </div>
                 <div class="form-group">
-                    <label>Jenis Kelamin *</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="jenisKelamin" value="Laki-laki" required> Laki-Laki</label>
-                        <label><input type="radio" name="jenisKelamin" value="Perempuan" required> Perempuan</label>
-                    </div>
+                    <label for="beratBadan">Berat Badan (kg):</label>
+                    <input type="number" id="beratBadan" name="beratBadan" required>
+                </div>
+                <div class="form-group">
+                    <label for="lingkarKepala">Lingkar Kepala (cm):</label>
+                    <input type="number" id="lingkarKepala" name="lingkarKepala" required>
                 </div>
                 <div class="form-actions">
                     <a href="{{ url()->previous() }}" style="text-decoration:none" class='submit-btn'>Kembali</a>
                     <button type="submit" class="submit-btn">Submit</button>
                 </div>
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             </form>
         </div>
     </div>

@@ -107,16 +107,21 @@
         <li class="nav-item">
           <a href="/dashboard/parameter" class="nav-link">
             <i class="nav-icon fas fa-cogs"></i>
-            <p>Parameter</p>
+            <p style='text-align: auto;'>Parameter</p>
           </a>
         </li>
         <!-- Logout -->
-        <li class="nav-item">
-          <a href="{{ route('logout') }}" class="nav-link">
-            <i class="nav-icon fas fa-sign-out-alt"></i>
-            <p>Logout</p>
-          </a>
-        </li>
+<!-- Logout -->
+<li class="nav-item">
+  <form action="{{ route('logout') }}" method="POST" style="width: 100%;">
+      @csrf
+      <button type="submit" class="nav-link" style="background: none; border: none; width: 100%; padding: 0; text-align: auto; display: block;">
+          <i class="nav-icon fas fa-sign-out-alt"></i>
+          <p style="margin: 0;">Logout</p>
+      </button>
+  </form>
+</li>
+
       </ul>
     </nav>
   </div>

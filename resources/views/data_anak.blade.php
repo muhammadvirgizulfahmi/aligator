@@ -1,3 +1,5 @@
+@use(App\Models\Anak)
+@use(App\Models\User)
 @include('home.navbar')
 <style>
     .container {
@@ -77,11 +79,80 @@
         background-color: #004c70;
         color: white;
     }
+    .action-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 20px; /* Increase the space between buttons */
+    align-items: center; /* Vertically center the buttons */
+    }
 </style>
     <div class="container">
+
+        @if (Route::has('login'))
+        @auth
+
         <div class="buttons">
-            <a href="{{ route('data_anak_create') }}" class="submit-btn">Tambah</a>
-          </div>
+            <a href="{{ route('anak.create') }}" class="submit-btn">Tambah</a>
+        </div>
+        
+        <div class="section">
+            @foreach ($children as $index => $child)
+                <h2>Anak ke - {{ $index + 1 }}</h2>
+            @endforeach
+        
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Wali</th>
+                            <th>Nama Anak</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Tanggal Lahir</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($children as $index => $child)
+                            <tr>
+                                <!-- Display Wali Name (assuming `id_wali` references `users` table) -->
+                                <td>{{ $child->wali->name ?? 'Wali tidak ditemukan' }}</td> <!-- Assuming relationship is 'wali' -->
+                                
+                                <!-- Display Nama Anak -->
+                                <td>{{ $child->nama }}</td>
+                                
+                                <!-- Display Jenis Kelamin -->
+                                <td>{{ $child->jenisKelamin }}</td>
+                                
+                                <!-- Display Tanggal Lahir -->
+                                <td>{{ $child->tgl_lahir->format('d F Y')}}</td> <!-- Assuming `tgl_lahir` is a Carbon date -->
+                                
+                                <td>
+                                    <div class="action-buttons">
+                                    <a href="{{ route('anak.edit', $child->id) }}" style="text-decoration:none" class="btn submit-btn btn-sm">Detail</a>
+                                    <form action="{{ route('anak.destroy', $child->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete {{ $child->nama }}?')">
+                                        Delete
+                                        </button>
+                                    </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center">Tidak ada data anak.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+        </div>
+        
+
+        @else
+        <div class="buttons">
+            <a href="{{ route('login') }}" class="submit-btn">Tambah</a>
+        </div>
+        <div class="section">
         <div class="section">
             <h2>Anak 1</h2>
             <form>
@@ -102,15 +173,17 @@
                             <td><input type="text" name="berat-badan"></td>
                             <td><input type="text" name="lingkar-kepala"></td>
                             <td>
-                                <a href="#" class="btn submit-btn btn-sm">Detil</a>
+                                <a href="#" class="btn submit-btn btn-sm">Detail</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
         </div>
-
-
-        {{-- <table class="table table-bordered">
+    </div>
+    @endauth
+    @endif
+    </div>
+{{-- <table class="table table-bordered">
             <thead>
               <tr>
                 <th>#</th>
@@ -153,34 +226,5 @@
               @endforeach
             </tbody>
           </table> --}}
-
-
-        <div class="section">
-            <h2>Anak 2</h2>
-            <form>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Umur</th>
-                            <th>Tinggi Badan</th>
-                            <th>Berat Badan</th>
-                            <th>Lingkar Kepala</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="number" name="umur"></td>
-                            <td><input type="text" name="tinggi-badan"></td>
-                            <td><input type="text" name="berat-badan"></td>
-                            <td><input type="text" name="lingkar-kepala"></td>
-                            <td>
-                                <a href="#" class="btn submit-btn btn-sm">Detil</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
-    </div>
 
 @include('home.footer')

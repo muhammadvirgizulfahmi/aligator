@@ -6,11 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Anak;
+
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    public $timestamps = false; // Disable timestamps
     const ROLE_ADMIN = 'admin';
     const ROLE_PENGGUNA = 'pengguna';
     const ROLE_DOKTER = 'dokter';
@@ -54,5 +57,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Anak::class, 'id_wali'); // Adjust the foreign key if needed
     }
 }

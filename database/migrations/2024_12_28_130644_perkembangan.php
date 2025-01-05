@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_anak');
             $table->foreign('id_anak')->references('id')->on('anak');
-            $table->date('tanggalUpdate');
             $table->integer('umur');
             $table->float('tinggiBadan');
             $table->float('beratBadan');
