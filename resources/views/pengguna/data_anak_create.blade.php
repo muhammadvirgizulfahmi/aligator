@@ -46,6 +46,10 @@
     cursor: pointer;
     }
 
+    
+    .submit-btn:hover {
+        background-color: #003a52;
+    }
     .delete-btn {
         background-color: #c90707;
         color: white;
@@ -55,11 +59,7 @@
         border-radius: 4px;
         cursor: pointer;
     }
-
-    .submit-btn:hover {
-        background-color: #003a52;
-    }
-
+    
     .delete-btn:hover {
         background-color: #8c0606;
     }
@@ -90,7 +90,7 @@
                 </ul>
             </div>
             @endif
-            <form method="POST" action="{{ route('anak.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('jadwal.store') }}" enctype="multipart/form-data">
             @csrf
                 <div class="form-group">
                     <label for="nama-anak">Nama Anak:</label>

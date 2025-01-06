@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Jadwal
     Route::get('/profil-dokter/{id}/jadwal/', [JadwalController::class, 'index'])->name('jadwal_dokter');
-    Route::get('/profil-dokter/{id}/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create');
+    Route::get('/profil-dokter/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create');
     });
     
     // jika admin ke dashboard

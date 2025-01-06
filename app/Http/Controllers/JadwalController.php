@@ -24,6 +24,12 @@ class JadwalController extends Controller
         return view('dokter.jadwal_dokter', compact('jadwals'), ['user' => $user]);
     }
 
+    public function create()
+    {
+        return view('dokter.jadwal_dokter_create');
+    }
+    
+
     /**
      * Display the specified resource.
      */

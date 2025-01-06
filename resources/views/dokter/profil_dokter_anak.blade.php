@@ -132,6 +132,25 @@
         .profile-picture:hover .edit-overlay {
             opacity: 1;
         }
+        .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    .submit-btn {
+    background-color: #004c70;
+    color: white;
+    border: none;
+    padding: 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    
+    .submit-btn:hover {
+        background-color: #003a52;
+    }
     </style>
 </head>
 <body>
@@ -172,9 +191,9 @@
                     <label>Alamat</label>
                     <input type="text" value="{{ $user->address }}" disabled>
                 </div>
-                <div class="actions">
+                <div class="form-actions">
                     <button>Edit</button>
-                    <a href="{{ route('jadwal_dokter', ['id' => $user->id]) }}">Jadwal</a>
+                    <a href="{{ route('jadwal_dokter', ['id' => $user->id]) }}" class="submit-btn" style="text-decoration:none">Jadwal</a>
                 </div>
             </div>
         </div>

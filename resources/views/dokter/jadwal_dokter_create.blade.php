@@ -178,10 +178,6 @@
         display: inline-block;
         text-align: center;
     }
-    .actions {
-            display: flex;
-            justify-content: center;
-        }
     .edit-btn:hover {
         background-color: #003a52;
     }
@@ -207,58 +203,34 @@
     </style>
 </head>
 <body>
-    <div class="header">Jadwal</div>
+    <div class="header">Tambah Jadwal</div>
     <div class="container">
         <div class="profile-card">
             <!-- Back Button -->
             <button class="back-button" onclick="window.history.back()">Kembali</button>
 
-                        <!-- Profile Picture Container -->
-                        <div class="profile-picture-container">
-                            <div class="profile-picture">
-                                <img src="{{ asset('storage/' . $user->fotoProfil) }}" alt="Profile Picture" id="profilePicture">
-                                <input type="file" id="fileInput" style="display: none;" onchange="submitForm()">
+                        <div class="info">
+                            <div class="field">
+                                <label>Hari</label>
+                                <input type="date" value="hari" required>
+                            </div>
+                            <div class="field">
+                                <label>Jam Buka</label>
+                                <input type="jamBuka" value="jamBuka" required>
+                            </div>
+                            <div class="field">
+                                <label>Jam Tutup</label>
+                                <input type="time" value="jamTutup" required>
+                            </div>
+                            <div class="field">
+                                <label>ID Dokter</label>
+                                <input type="number" value="id_dokter" required hidden>
+                            </div>
+                            <div class="-form-actions">
+                                <button>Edit</button>
+                                <a href="{{ route('jadwal_dokter') }}">Jadwal</a>
                             </div>
                         </div>
-
-            <!-- Profile Info -->
-            <div class="info">
-                <table class="styled-table">
-                    <thead>
-                        <tr style="border: 2px solid black;">
-                            <th>Hari</th>
-                            <th>Jam Buka</th>
-                            <th>Jam Tutup</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($jadwals as $jadwal)
-                        <tr>
-                            <td>{{ $jadwal->umur }}</td>
-                            <td>{{ $jadwal->tinggiBadan }}</td>
-                            <td>{{ $jadwal->beratBadan }}</td>
-                            <td>{{ $jadwal->lingkarKepala }}</td>
-                            <td>
-                                <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
-                                    <a href="{{ route('jadwal.edit', $jadwal->id) }}" style="text-decoration:none;" class="btn submit-btn">Edit</a>
-                                    <form action="{{ route('jadwal.destroy', $jadwal->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete?')">
-                                            Delete
-                                        </button>
-                                    </div>
-                                </td>                
-                            </tr>
-                            @endforeach
-                        </form>
-                    </tbody>
-                </table>
-                <div class="form-actions">
-                    <a href="{{ route('jadwal.create') }}" class="submit-btn" style="text-decoration:none">Tambah</a>
-                </div>
-            </div>
         </div>
     </div>
     
