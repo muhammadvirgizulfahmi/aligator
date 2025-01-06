@@ -91,14 +91,21 @@
         @if (Route::has('login'))
         @auth
 
+        @if (Auth::user()->role == User::ROLE_PENGGUNA)
         <div class="buttons">
             <a href="{{ route('anak.create') }}" class="submit-btn">Tambah</a>
         </div>
+        @endif
         
         <div class="section">
+            @if (Auth::user()->role == User::ROLE_PENGGUNA)
             @foreach ($children as $index => $child)
                 <h2>Anak ke - {{ $index + 1 }}</h2>
             @endforeach
+
+            @else
+            <h2>Daftar Anak</h2>
+            @endif
         
                 <table class="table">
                     <thead>
@@ -126,6 +133,7 @@
                                 <td>{{ $child->tgl_lahir->format('d F Y')}}</td> <!-- Assuming `tgl_lahir` is a Carbon date -->
                                 
                                 <td>
+                                    @if (Auth::user()->role == User::ROLE_PENGGUNA)
                                     <div class="action-buttons">
                                     <a href="{{ route('anak.edit', $child->id) }}" style="text-decoration:none" class="btn submit-btn btn-sm">Detail</a>
                                     <form action="{{ route('anak.destroy', $child->id) }}" method="POST">
@@ -136,6 +144,11 @@
                                         </button>
                                     </form>
                                     </div>
+                                    @else
+                                    <div class="action-buttons">
+                                    <a href="{{ route('anak.edit', $child->id) }}" style="text-decoration:none" class="btn submit-btn btn-sm">Detail</a>
+                                    </div>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

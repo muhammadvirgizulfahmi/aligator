@@ -114,7 +114,7 @@
           </button>
         </li>
         <!-- Parameter -->
-        <li class="nav-item">
+        <li class="nav-item"> 
           <button onclick="window.location.href='/dashboard/parameter'" class="nav-link">
             <i class="nav-icon fas fa-cogs"></i>
             <p>Parameter</p>

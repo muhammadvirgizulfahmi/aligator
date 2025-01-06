@@ -1,3 +1,5 @@
+@use(App\Models\User)
+@use(App\Models\Anak)
 @include('home.navbar')
 <style>
     .container {
@@ -136,9 +138,12 @@
                 <label for="jenis-kelamin">Jenis Kelamin:</label>
                 <input type="text" id="jenis-kelamin" name="jenisKelamin" value="{{ $anak->jenisKelamin }}">
             </div>
+            @auth
+            @if (Auth::user()->role == User::ROLE_PENGGUNA)
             <div class="form-actions">
                 <button type="submit" class="submit-btn">Update</button>
             </div>
+            @endif
         </form>
     </div>
 
@@ -146,6 +151,7 @@
         <h2>Biodata Perkembangan Anak</h2>
             <table class="styled-table">
                 <thead>
+                    @if (Auth::user()->role == User::ROLE_PENGGUNA)
                     <tr style="border: 2px solid black;">
                         <th>Umur</th>
                         <th>Tinggi Badan</th>
@@ -153,6 +159,14 @@
                         <th>Lingkar Kepala</th>
                         <th>Aksi</th>
                     </tr>
+                    @else
+                    <tr style="border: 2px solid black;">
+                        <th>Umur</th>
+                        <th>Tinggi Badan</th>
+                        <th>Berat Badan</th>
+                        <th>Lingkar Kepala</th>
+                    </tr>
+                    @endif
                 </thead>
                 <tbody>
                     @foreach ($perkembangan as $perkembangans)
@@ -161,6 +175,7 @@
                         <td>{{ $perkembangans->tinggiBadan }}</td>
                         <td>{{ $perkembangans->beratBadan }}</td>
                         <td>{{ $perkembangans->lingkarKepala }}</td>
+                        @if (Auth::user()->role == User::ROLE_PENGGUNA)
                         <td>
                             <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
                                 <a href="{{ route('perkembangan.edit', $perkembangans->id) }}" style="text-decoration:none;" class="btn submit-btn">Edit</a>
@@ -171,34 +186,96 @@
                                         Delete
                                     </button>
                                 </form>
-                            </div>                            
+                            </div>
                         </td>
+                        @endif                        
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            @if (Auth::user()->role == User::ROLE_PENGGUNA)
             <div class="form-actions">
                 <a href="{{ route('perkembangan.create', ['id' => $anak->id]) }}" class="submit-btn" style="text-decoration:none">Tambah</a>
             </div>
+            @endif
     </div>
     
     <div class="section">
         <h2>Rekomendasi Kesehatan</h2>
+    
+        <!-- System Recommendations -->
         <table class="table">
             <thead>
                 <tr>
-                    <th>Sistem</th>
-                    <th>Dokter Anak</th>
+                    <th>Rekomendasi Sistem</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+                @if (!empty($systemRecommendations))
+                    @foreach ($systemRecommendations as $recommendation)
+                    <tr>
+                        <td>{{ $recommendation }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="1">Tidak ada rekomendasi kesehatan dari sistem.</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
+    
+        <!-- Doctor Recommendations -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rekomendasi Dokter Anak</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($doctorRecommendations->isNotEmpty())
+                    @foreach ($doctorRecommendations as $recommend)
+                    <tr>
+                        <td>{{ $recommend->recommendation }}</td>
+                    </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="1">Belum ada rekomendasi dari dokter anak.</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+    
+        <!-- Button to trigger modal -->
+
+        
+        @if (Auth::user()->role == User::ROLE_DOKTER)
+        <!-- Modal -->
+        <div class="modal fade" id="addRecommendationModal" tabindex="-1" aria-labelledby="addRecommendationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('recommendations.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id_anak" value="{{ $anak->id }}">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="recommendation">Rekomendasi:</label>
+                                <textarea id="recommendation" name="recommendation" class="form-control" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="submit-btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
+    
+
     </div>
 </div>
-
+@endauth
 @include('home.footer')

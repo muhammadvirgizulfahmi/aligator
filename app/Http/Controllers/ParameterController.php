@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Parameter;
 
 class ParameterController extends Controller
 {
@@ -12,7 +13,8 @@ class ParameterController extends Controller
      */
     public function index()
     {
-        return view("parameter");
+        $parameter = Parameter::all(); // Fetch all Parameter data
+        return view("parameter", compact("parameter"));
     }
 
     /**

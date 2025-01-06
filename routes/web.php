@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\DashboardParameterController;
 use App\Http\Controllers\ProfilAkunController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PerkembanganController;
+use App\Http\Controllers\RecommendationController;
 
 
 
@@ -57,6 +58,12 @@ Route::post('/register/dokter', [RegisteredUserController::class, 'storeDokter']
 
 // Route::get('/register-pengguna', [ProfilAkunController::class, 'profilPengguna'])->name('profil_pengguna');
 
+// Data Anak
+Route::get('/data-anak', [AnakController::class, 'showChildrenProfile'])->name('data_anak');
+Route::get('/edit/{id}', [AnakController::class, 'edit'])->name('anak.edit');
+
+Route::post('/recommendations/store', [RecommendationController::class, 'store'])->name('recommendations.store');
+
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth'])->group(function () {
@@ -67,10 +74,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Data Anak
     Route::prefix('/data-anak')->group(function () {
-        Route::get('/', [AnakController::class, 'showChildrenProfile'])->name('data_anak'); 
         Route::get('/create', [AnakController::class, 'create'])->name('anak.create');
         Route::post('/store', [AnakController::class, 'store'])->name('anak.store');
-        Route::get('/edit/{id}', [AnakController::class, 'edit'])->name('anak.edit');
         Route::put('/update/{id}', [AnakController::class, 'update'])->name('anak.update');
         // Route::delete('/destroy/{id}', [AnakController::class, 'destroy'])->name('anak.destroy');
         Route::delete('/{id}', [AnakController::class, 'destroy'])->name('anak.destroy');
