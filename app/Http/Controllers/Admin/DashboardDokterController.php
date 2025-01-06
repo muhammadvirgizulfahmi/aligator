@@ -21,25 +21,42 @@ class DashboardDokterController extends Controller
         $dokter = User::where('role', 'dokter')->get();
         
         // Return the view
-        return view('admin.dokter.dashboard', compact('dokters'));
+        return view('admin.dokter.dashboard', compact('user'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
 
-     public function create()
-     {
-         return view("pengguna.data_anak_create");
-     }
-
-     public function edit()
-     {
-        return view("pengguna.data_anak_edit");
-     }
-     public function store(Request $request)
+    public function create()
     {
-        //
+        return view("admin.dokter.create");
+    }
+    
+    public function store(Request $request)
+    {
+        // Validate the incoming request
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|string',
+            'email' => 'required|string',
+            'fotoSertifikat' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'jenisKelamin' => 'required|string',
+        ]);
+
+        // Handle file upload for the photo
+        if ($request->hasFile('fotoSertifikat')) {
+            $path = $request->file('fotoSertifikat')->store('profile_photos', 'public');
+            $validated['fotoSertifikat'] = $path;
+        } else {
+            $validated['fotoSertifikat'] = 'default.jpg'; // Nilai default
+        }        
+
+        // Create a new user with the validated data
+        User::create($validated);
+
+        // Redirect to the user list page
+        return redirect()->route('dokter.dashboard')->with('success', 'User created successfully.');
     }
 
     /**
@@ -47,25 +64,74 @@ class DashboardDokterController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Find the user by ID
+        $user = User::findOrFail($id);
+
+        // Return a view and pass the user data
+        return view('admin.dokter.show', ['user' => $user]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Show the form for editing the specified user.
+     */
+    public function edit(string $id)
+    {
+        // Find the user by ID
+        $user = User::findOrFail($id);
+
+        // Return a view for editing the user
+        return view('admin.dokter.edit', compact('user'));
+    }
+
+    /**
+     * Update the specified user in the database.
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Cari pengguna berdasarkan ID
+        $user = User::findOrFail($id);
+
+        // Validasi data
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'username' => 'required|string',
+            'email' => 'required|string',
+            'fotoSertifikat' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'jenisKelamin' => 'required|string',
+        ]);
+        
+        // Handle file upload for the photo
+        if ($request->hasFile('fotoProfil')) {
+            $path = $request->file('fotoProfil')->store('profile_photos', 'public');
+            $validated['fotoProfil'] = $path;
+        } else {
+            $validated['fotoProfil'] = 'default.jpg'; // Nilai default
+        }
+        
+        // Update data pengguna
+        $user->update($validated);
+
+        // Redirect ke dashboard pengguna setelah update
+        return redirect()->route('dokter.dashboard', $user->id)->with('success', 'User updated successfully.');
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified user from the database.
      */
     public function destroy(string $id)
     {
-        //
+        // Find the user by ID
+        $user = User::findOrFail($id);
+
+        // Delete the user from the database
+        $user->delete();
+
+        // Redirect to the user list page
+        return redirect()->route('dokter.dashboard')->with('success', 'User deleted successfully.');
     }
 }
+
 
 // <?php
 

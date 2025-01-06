@@ -17,6 +17,7 @@ use App\Http\Controllers\AnakController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\Admin\DashboardPenggunaController;
+use App\Http\Controllers\Admin\DashboardDokterController;
 use App\Http\Controllers\Admin\DashboardParameterController;
 use App\Http\Controllers\ProfilAkunController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -129,6 +130,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit/{id}', [DashboardParameterController::class, 'edit'])->name('parameter.edit');
             Route::put('/update/{id}', [DashboardParameterController::class, 'update'])->name('parameter.update');
             Route::delete('/destroy/{id}', [DashboardParameterController::class, 'destroy'])->name('parameter.destroy');  // Nama route diubah
+
+        });
+
+        // dokter
+        Route::middleware('admin')->prefix('/dokter')->group(function () {
+            Route::get('/', [DashboardDokterController::class, 'index'])->name('dokter.dashboard');
+            Route::get('/show/{id}', [DashboardDokterController::class, 'show'])->name('dokter.show');
+            Route::get('/create', [DashboardDokterController::class, 'create'])->name('dokter.create');
+            Route::post('/store', [DashboardDokterController::class, 'store'])->name('dokter.store');
+            Route::get('/edit/{id}', [DashboardDokterController::class, 'edit'])->name('dokter.edit');
+            Route::put('/update/{id}', [DashboardDokterController::class, 'update'])->name('dokter.update');
+            Route::delete('/dokter/{id}', [DashboardDokterController::class, 'destroy'])->name('dokter.destroy');  // Nama route diubah
 
         });
 //             Route::get('/create', [KabkotaController::class, 'create']);
