@@ -1,4 +1,5 @@
 @use(App\Models\User)
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,7 +79,8 @@
             gap: 10px;
         }
         .navbar .user img {
-            height: 20px;
+            height: 30px;
+            width: 30px;
             border-radius: 50%;
         }
 
@@ -583,7 +585,7 @@
     @auth
     <div class="user" id="userDropdown">
         <span>{{ Auth::user()->username }}</span>
-        <img src="{{ asset('admin/dist/homepage/user.jpg')}}" alt="User">
+        <img src="{{ asset('storage/' . Auth::user()->fotoProfil) }}" alt="User">
         <!-- Dropdown menu -->
         <div class="dropdown-menu">
             

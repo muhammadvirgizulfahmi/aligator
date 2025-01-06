@@ -5,23 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
+use App\Models\User;
 
-class ProfilDokterController extends Controller
+class JadwalController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $id)
     {
-        return view("profilDokter");
-    }
+        // Fetch all jadwal data with doctor (dokter) relationship, filtering users by role 'dokter'
+        $jadwals = Jadwal::with(['dokter' => function ($query) {
+            $query->where('role', 'dokter'); // Only include users with 'dokter' role
+        }])->get();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        $user = User::findOrFail($id);
+    
+        return view('dokter.jadwal_dokter', compact('jadwals'), ['user' => $user]);
     }
 
     /**

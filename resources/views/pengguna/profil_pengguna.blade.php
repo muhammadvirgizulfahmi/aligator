@@ -76,13 +76,78 @@
             display: flex;
             justify-content: center;
         }
+
+        /* New styling for button and profile picture */
+        .back-button {
+            position:absolute;
+            left: 320px;
+            top: 100px;
+            background-color: #2d2f59;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .profile-picture-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .profile-picture {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .edit-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .profile-picture:hover .edit-overlay {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-    <div class="header">Profil Anak Sehat</div>
+    <div class="header">Profil Pengguna</div>
     <div class="container">
         <div class="profile-card">
-            <img src="{{ $user->fotoProfil }}" alt="Profile Picture">
+            <button class="back-button" onclick="window.history.back()">Kembali</button>
+
+            <!-- Profile Picture Container -->
+            <div class="profile-picture-container">
+                <div class="profile-picture">
+                    <img src="{{ asset('storage/' . $user->fotoProfil) }}" alt="Profile Picture" id="profilePicture">
+                    <div class="edit-overlay" onclick="triggerFileInput()">Edit</div>
+                    <input type="file" id="fileInput" style="display: none;" onchange="submitForm()">
+                </div>
+            </div>
             <div class="info">
                 <div class="field">
                     <label>Full Name</label>
@@ -106,5 +171,26 @@
             </div>
         </div>
     </div>
+
+    <!-- Form for uploading the file -->
+    <form id="uploadForm" action="{{ route('profil_update_pengguna') }}" method="POST" enctype="multipart/form-data" style="display: none;">
+        @csrf
+        <input type="file" name="fotoProfil" id="hiddenFileInput">
+    </form>
+    
+    <script>
+        function triggerFileInput() {
+            document.getElementById('fileInput').click();
+        }
+    
+        function submitForm() {
+            // Copy the selected file to the hidden form and submit it
+            const fileInput = document.getElementById('fileInput');
+            const hiddenFileInput = document.getElementById('hiddenFileInput');
+            hiddenFileInput.files = fileInput.files;
+            document.getElementById('uploadForm').submit();
+        }
+    </script>
+
 </body>
 </html>

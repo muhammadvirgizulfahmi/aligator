@@ -23,6 +23,7 @@ use App\Http\Controllers\ProfilAkunController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PerkembanganController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\JadwalController;
 
 
 
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('pengguna')->prefix('')->group(function () {
     // Profil Pengguna
     Route::get('/profil-pengguna/{id}', [ProfilAkunController::class, 'profilPengguna'])->name('profil_pengguna');
+    Route::post('/profil-pengguna/update/', [ProfilAkunController::class, 'updateProfilPengguna'])->name('profil_update_penggunna');
 
     // Data Anak
     Route::prefix('/data-anak')->group(function () {
@@ -103,6 +105,11 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('dokter')->prefix('')->group(function () {
     // Profil Dokter
     Route::get('/profil-dokter/{id}', [ProfilAkunController::class, 'profilDokter'])->name('profil_dokter');
+    Route::post('/profil-dokter/update/', [ProfilAkunController::class, 'updateProfilDokter'])->name('profil_update_dokter');
+    
+    // Jadwal
+    Route::get('/profil-dokter/{id}/jadwal/', [JadwalController::class, 'index'])->name('jadwal_dokter');
+    Route::get('/profil-dokter/{id}/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create');
     });
     
     // jika admin ke dashboard

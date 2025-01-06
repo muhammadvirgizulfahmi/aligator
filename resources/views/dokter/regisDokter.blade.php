@@ -139,7 +139,12 @@
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Masukkan konfirmasi password" required>
         </div>
 
-          <div class="form-group">
+        <div class="form-group">
+            <label for="alamat">Alamat *</label>
+            <input type="text" id="alamat" name="alamat" placeholder="Masukkan Alamat Praktek" required>
+        </div>
+
+        <div class="form-group">
             <label for="sertifikat">Sertifikat *</label>
             <input type="file" id="sertifikat" name="fotoSertifikat" accept=".pdf,.jpg,.jpeg,.png" required>
         </div>

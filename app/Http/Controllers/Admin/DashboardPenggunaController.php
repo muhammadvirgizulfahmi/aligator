@@ -48,10 +48,10 @@ class DashboardPenggunaController extends Controller
 
         // Handle file upload for the photo
         if ($request->hasFile('fotoProfil')) {
-            $path = $request->file('fotoProfil')->store('profile_photos', 'public');
+            $path = $request->file('fotoProfil')->store('profile_pictures', 'public');
             $validated['fotoProfil'] = $path;
         } else {
-            $validated['fotoProfil'] = 'default.jpg'; // Nilai default
+            $validated['fotoProfil'] = 'profile_pictures/default.jpg'; // Nilai default
         }        
 
         // Hash the password
@@ -115,10 +115,10 @@ class DashboardPenggunaController extends Controller
         
         // Handle file upload for the photo
         if ($request->hasFile('fotoProfil')) {
-            $path = $request->file('fotoProfil')->store('profile_photos', 'public');
+            $path = $request->file('fotoProfil')->store('profile_pictures', 'public');
             $validated['fotoProfil'] = $path;
         } else {
-            $validated['fotoProfil'] = 'default.jpg'; // Nilai default
+            $validated['fotoProfil'] = 'profile_pictures/default.jpg'; // Nilai default
         }
         
         // Update data pengguna

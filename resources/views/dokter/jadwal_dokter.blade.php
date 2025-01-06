@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Dokter Anak</title>
+    <title>Jadwal Dokter Anak</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -80,8 +80,8 @@
         /* New styling for button and profile picture */
         .back-button {
             position:absolute;
-            left: 320px;
-            top: 100px;
+            left: 340px;
+            top: 120px;
             background-color: #2d2f59;
             color: white;
             padding: 10px 20px;
@@ -132,6 +132,55 @@
         .profile-picture:hover .edit-overlay {
             opacity: 1;
         }
+        .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .table th, .table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+    .table th {
+        background-color: #004c70;
+        color: white;
+    }
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        border: 2px solid black;
+    }
+    .styled-table th,
+    .styled-table td {
+        border: 2px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+    .styled-table th {
+        background-color: #004c70;
+        color: white;
+    }
+    .styled-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .styled-table tr:nth-child(odd) {
+        background-color: white;
+    }
+    .edit-btn {
+        background-color: #004c70;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-block;
+        text-align: center;
+    }
+    .edit-btn:hover {
+        background-color: #003a52;
+    }
     </style>
 </head>
 <body>
@@ -141,65 +190,54 @@
             <!-- Back Button -->
             <button class="back-button" onclick="window.history.back()">Kembali</button>
 
-            <!-- Profile Picture Container -->
-            <div class="profile-picture-container">
-                <div class="profile-picture">
-                    <img src="{{ asset('storage/' . $user->fotoProfil) }}" alt="Profile Picture" id="profilePicture">
-                    <div class="edit-overlay" onclick="triggerFileInput()">Edit</div>
-                    <input type="file" id="fileInput" style="display: none;" onchange="submitForm()">
-                </div>
-            </div>
+                        <!-- Profile Picture Container -->
+                        <div class="profile-picture-container">
+                            <div class="profile-picture">
+                                <img src="{{ asset('storage/' . $user->fotoProfil) }}" alt="Profile Picture" id="profilePicture">
+                                <input type="file" id="fileInput" style="display: none;" onchange="submitForm()">
+                            </div>
+                        </div>
 
             <!-- Profile Info -->
             <div class="info">
-                <div class="field">
-                    <label>Full Name</label>
-                    <input type="text" value="{{ $user->name }}" disabled>
-                </div>
-                <div class="field">
-                    <label>Email</label>
-                    <input type="email" value="{{ $user->email }}" disabled>
-                </div>
-                <div class="field">
-                    <label>Jenis Kelamin</label>
-                    <input type="text" value="{{ $user->gender }}" disabled>
-                </div>
-                <div class="field">
-                    <label>No. Telpon</label>
-                    <input type="text" value="{{ $user->phone }}" disabled>
-                </div>
-                <div class="field">
-                    <label>Alamat</label>
-                    <input type="text" value="{{ $user->address }}" disabled>
-                </div>
-                <div class="actions">
-                    <button>Edit</button>
-                    <a href="{{ route('jadwal_dokter', ['id' => $user->id]) }}">Jadwal</a>
+                <table class="styled-table">
+                    <thead>
+                        <tr style="border: 2px solid black;">
+                            <th>Hari</th>
+                            <th>Jam Buka</th>
+                            <th>Jam Tutup</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($jadwals as $jadwal)
+                        <tr>
+                            <td>{{ $jadwal->umur }}</td>
+                            <td>{{ $jadwal->tinggiBadan }}</td>
+                            <td>{{ $jadwal->beratBadan }}</td>
+                            <td>{{ $jadwal->lingkarKepala }}</td>
+                            <td>
+                                <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+                                    <a href="{{ route('perkembangan.edit', $jadwal->id) }}" style="text-decoration:none;" class="btn submit-btn">Edit</a>
+                                    <form action="{{ route('perkembangan.destroy', $jadwal->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>                
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="form-actions">
+                    <a href="{{ route('jadwal.create', ['id' => $jadwals->id]) }}" class="submit-btn" style="text-decoration:none">Tambah</a>
                 </div>
             </div>
         </div>
     </div>
-
-    
-    <!-- Form for uploading the file -->
-    <form id="uploadForm" action="{{ route('profil_update_dokter') }}" method="POST" enctype="multipart/form-data" style="display: none;">
-        @csrf
-        <input type="file" name="fotoProfil" id="hiddenFileInput">
-    </form>
-    
-    <script>
-        function triggerFileInput() {
-            document.getElementById('fileInput').click();
-        }
-    
-        function submitForm() {
-            // Copy the selected file to the hidden form and submit it
-            const fileInput = document.getElementById('fileInput');
-            const hiddenFileInput = document.getElementById('hiddenFileInput');
-            hiddenFileInput.files = fileInput.files;
-            document.getElementById('uploadForm').submit();
-        }
-    </script>
     
 
 </body>

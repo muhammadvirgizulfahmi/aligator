@@ -63,4 +63,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Anak::class, 'id_wali'); // Adjust the foreign key if needed
     }
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'id_dokter');
+    }
 }
