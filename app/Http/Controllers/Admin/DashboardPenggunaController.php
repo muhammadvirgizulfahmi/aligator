@@ -18,7 +18,7 @@ class DashboardPenggunaController extends Controller
         // return view("admin.pengguna.dashboard");
 
         // Fetch all users from the database
-        $user = User::all();
+        $user = User::where('role', 'pengguna')->get();
         
         // Return the view
         return view('admin.pengguna.dashboard', compact('user'));

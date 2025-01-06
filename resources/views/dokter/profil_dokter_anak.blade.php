@@ -82,7 +82,7 @@
     <div class="header">Profil Anak Sehat</div>
     <div class="container">
         <div class="profile-card">
-            <img src="logo1.png" alt="Profile Picture">
+            <img src="{{ asset('storage/' . $user->fotoProfil) }}" alt="Profile Picture">
             <div class="info">
                 <div class="field">
                     <label>Full Name</label>

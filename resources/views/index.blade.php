@@ -589,7 +589,7 @@
             
           @auth  
           @if (Auth::user()->role == User::ROLE_DOKTER)
-          <a href="{{ url('profil-pengguna/' . Auth::user()->id) }}">Profile</a> <!-- Link to the profile page -->
+          <a href="{{ url('profil-dokter/' . Auth::user()->id) }}">Profile</a> <!-- Link to the profile page -->
           @else 
           <a href="{{ url('profil-pengguna/' . Auth::user()->id) }}">Profile</a> <!-- Link to the profile page -->
           @endif

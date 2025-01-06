@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use app\Models\Dokter;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +18,7 @@ class DashboardDokterController extends Controller
         // return view("admin.pengguna.dashboard");
 
         // Fetch all users from the database
-        $dokters = Dokter::all();
+        $dokter = User::where('role', 'dokter')->get();
         
         // Return the view
         return view('admin.dokter.dashboard', compact('dokters'));
